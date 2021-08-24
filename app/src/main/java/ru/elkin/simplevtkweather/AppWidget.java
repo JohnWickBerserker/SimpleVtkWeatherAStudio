@@ -16,40 +16,31 @@ public class AppWidget extends AppWidgetProvider {
 
     private static final String TAG = "VtkTemWidget";
 
-    static void updateWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId, String temperature) {
+    private static void setWidgetsIsUpdating(Context context) {
+        updateAppWidgets(context, createViewsToSetIsUpdating(context));
+    }
 
+    private static void setWidgetsTemperature(Context context, String temperature) {
+        updateAppWidgets(context, createViewsToSetTemperature(context, temperature));
+    }
+
+    private static void updateAppWidgets(Context context, RemoteViews views) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context,  AppWidget.class));
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
+    }
+
+    private static RemoteViews createViewsToSetTemperature(Context context, String temperature) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.app_widget);
-
         views.setTextViewText(R.id.tem, temperature);
         views.setTextColor(R.id.tem, ContextCompat.getColor(context, R.color.tem));
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        return views;
     }
 
-    static void setWidgetIsUpdating(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId)
-    {
+    private static RemoteViews createViewsToSetIsUpdating(Context context) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.app_widget);
         views.setTextColor(R.id.tem, ContextCompat.getColor(context, R.color.temUpdate));
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
-
-    static void updateWidgets(Context context, String temperature)
-    {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context,  AppWidget.class));
-        for (int appWidgetId : appWidgetIds) {
-            updateWidget(context, appWidgetManager, appWidgetId, temperature);
-        }
-    }
-
-    static void setWidgetsIsUpdating(Context context) {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context,  AppWidget.class));
-        for (int appWidgetId : appWidgetIds) {
-            setWidgetIsUpdating(context, appWidgetManager, appWidgetId);
-        }
+        return views;
     }
 
     @Override
@@ -60,11 +51,9 @@ public class AppWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
+    public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (intent.getAction().equals(Intent.ACTION_USER_PRESENT))
-        {
+        if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
             Log.d(TAG, "ACTION_USER_PRESENT");
             new FetchWeatherData(context).execute();
         }
@@ -92,8 +81,7 @@ public class AppWidget extends AppWidgetProvider {
         private Context context;
         private String noDataString;
 
-        public FetchWeatherData(Context context)
-        {
+        public FetchWeatherData(Context context) {
             this.context = context;
             this.noDataString = context.getString(R.string.no_data);
         }
@@ -112,7 +100,7 @@ public class AppWidget extends AppWidgetProvider {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            updateWidgets(context, s);
+            setWidgetsTemperature(context, s);
         }
     }
 }
