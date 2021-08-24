@@ -11,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toast.makeText(this, "only widget. closing...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.widget_only_message), Toast.LENGTH_LONG).show();
         finish();
     }
 }

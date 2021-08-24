@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/cityDesc"
-        android:text="@string/vtkCity"
+        android:text="@string/vtk_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textSize="15dp"
-        android:textColor="#ffffff"/>
+        android:textColor="@color/tem"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,6 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25dp"
-            android:textColor="#ffffff"/>
+            android:textColor="@color/tem"/>
     </LinearLayout>
 </LinearLayout>

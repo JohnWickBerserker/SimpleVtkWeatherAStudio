@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">SimpleVtkWeather</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="no_data">н/д</string>
     <string name="no_data_cap">Н/Д</string>
     <string name="celsius_postfix"> °C</string>
-    <string name="vtkCity">Воткинск</string>
+    <string name="vtk_city">Воткинск</string>
+    <string name="widget_only_message">only widget. closing.</string>
 </resources>
