@@ -31,7 +31,7 @@ class TemperatureRequester {
     private float requestTemperatureAsFloat() throws Exception {
         String _test = "909c5aee2437fd65faa5f7913e7f100a";
         URLConnection con = new URL(WEATHER_URL).openConnection();
-        con.setRequestProperty("Cookie", "_test" + _test);
+        con.setRequestProperty("Cookie", "_test=" + _test);
         InputStream response = con.getInputStream();
         return Float.parseFloat(convertStreamToString(response));
     }
