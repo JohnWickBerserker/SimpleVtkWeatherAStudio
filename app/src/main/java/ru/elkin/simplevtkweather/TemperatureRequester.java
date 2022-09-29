@@ -4,12 +4,13 @@ import android.util.Log;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
 class TemperatureRequester {
     private static final String TAG = "TemRequester";
-    private static final String WEATHER_URL = "http://sensor1-189909.000webhostapp.com/getTem.php";
+    private static final String WEATHER_URL = "http://weatherstation.ezyro.com/getTem.php";
 
     private String noDataString;
 
@@ -28,8 +29,19 @@ class TemperatureRequester {
     }
 
     private float requestTemperatureAsFloat() throws Exception {
-        InputStream response = new URL(WEATHER_URL).openStream();
+        String firstGet = readFromUrl(WEATHER_URL);
+        String _test = firstGet.substring(firstGet.indexOf("_test=") + 6, firstGet.indexOf("_test=") + 6 + 32);
+        _test = "909c5aee2437fd65faa5f7913e7f100a";
+
+        URLConnection con = new URL(WEATHER_URL).openConnection();
+        con.setRequestProperty("Cookie", "_test" + _test);
+        InputStream response = con.getInputStream();
         return Float.parseFloat(convertStreamToString(response));
+    }
+
+    private String readFromUrl(String url) throws Exception {
+        InputStream response = new URL(url).openStream();
+        return convertStreamToString(response);
     }
 
     private String convertStreamToString(InputStream stream)
